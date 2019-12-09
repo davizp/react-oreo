@@ -1,6 +1,12 @@
 {
-  "name": "react-oreo",
-  "version": "0.1.0",
-  "main": "index.js",
-  "license": "MIT"
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "lerna run build"
+  },
+  "devDependencies": {
+    "lerna": "^2.11.0"
+  }
 }
