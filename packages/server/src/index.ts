@@ -1,3 +1,3 @@
-import { add } from "@cashew/common";
+import { checkValidity } from '@cashew/common';
 
-console.log(add(1, 2));
+console.log(checkValidity);
