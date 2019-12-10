@@ -1,7 +1,7 @@
 import { regex } from './regularExpressions';
 import { messages } from './messages';
 
-export interface Rules {
+interface Rules {
   isRequired?: boolean;
   isEmail?: boolean;
   minLength?: number;
@@ -11,15 +11,12 @@ export interface Rules {
   isFlexibleRequired?: boolean;
 }
 
-export interface validationObject {
+interface validationObject {
   valid: boolean;
   errorMessage: string;
 }
 
-export const checkValidity = (
-  value: string,
-  rules: Rules
-): validationObject => {
+const checkValidity = (value: string, rules: Rules): validationObject => {
   let isValid = true;
   if (!rules) {
     return {
@@ -32,7 +29,7 @@ export const checkValidity = (
     isValid = value.trim() !== '' && isValid;
 
     return {
-      errorMessage: messages(value).isRequired,
+      errorMessage: !isValid ? messages(value).isRequired : '',
       valid: isValid
     };
   }
@@ -41,7 +38,7 @@ export const checkValidity = (
     isValid = value.length >= rules.minLength && isValid;
 
     return {
-      errorMessage: messages(value).minLength,
+      errorMessage: !isValid ? messages(value).minLength : '',
       valid: isValid
     };
   }
@@ -50,7 +47,7 @@ export const checkValidity = (
     isValid = value.length <= rules.maxLength && isValid;
 
     return {
-      errorMessage: messages(value).maxLength,
+      errorMessage: !isValid ? messages(value).maxLength : '',
       valid: isValid
     };
   }
@@ -59,7 +56,7 @@ export const checkValidity = (
     isValid = regex.email.test(value) && isValid;
 
     return {
-      errorMessage: messages(value).isEmail,
+      errorMessage: !isValid ? messages(value).isEmail : '',
       valid: isValid
     };
   }
@@ -68,7 +65,7 @@ export const checkValidity = (
     isValid = regex.numeric.test(value) && isValid;
 
     return {
-      errorMessage: messages(value).isNumeric,
+      errorMessage: !isValid ? messages(value).isNumeric : '',
       valid: isValid
     };
   }
@@ -77,7 +74,7 @@ export const checkValidity = (
     isValid = rules.isEqual && isValid;
 
     return {
-      errorMessage: messages(value).isEqual,
+      errorMessage: !isValid ? messages(value).isEqual : '',
       valid: isValid
     };
   }
@@ -89,7 +86,7 @@ export const checkValidity = (
       isValid = value.trim() !== '';
 
       return {
-        errorMessage: messages(value).isFlexibleRequired,
+        errorMessage: !isValid ? messages(value).isFlexibleRequired : '',
         valid: isValid
       };
     }
@@ -104,3 +101,5 @@ export const checkValidity = (
     valid: isValid
   };
 };
+
+module.exports = checkValidity;
