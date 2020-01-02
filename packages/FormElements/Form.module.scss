@@ -1,0 +1,583 @@
+@import '../../scss/abstract/variables';
+@import '../../scss/abstract/mixins';
+@import '../../scss/abstract/colors';
+@import '../../scss/abstract/functions';
+
+.Form {
+  // this to variables
+  // -----------------------------
+  $validColor: green;
+  $invalidColor: color(red, default);
+  // -----------------------------
+
+  .disabled,
+  input[type='radio'][disabled],
+  input[type='checkbox'][disabled],
+  fieldset[disabled] input[type='radio'],
+  fieldset[disabled] input[type='checkbox'] {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+
+    ~ label {
+      opacity: 0.5;
+    }
+  }
+
+  input[type='submit'],
+  input[type='reset'],
+  input[type='button'],
+  button {
+    cursor: pointer;
+    background: none;
+    border: 0;
+    border-radius: 0.5rem;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    user-select: none;
+    appearance: none;
+    outline: 0 none;
+    text-transform: uppercase;
+    transition: all 0.2s ease-in-out;
+
+    &.btn-primary {
+      padding: 1.3rem 0;
+      background: color(blue, 'default');
+      color: white;
+      width: 10rem;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background: color(blue, 'darker-2');
+      }
+      &:disabled {
+        background: color(grey, 'lighter-1');
+        cursor: not-allowed;
+      }
+    }
+    &.btn-hollow {
+      padding: 1.3rem 0;
+      border: 0.2rem solid;
+
+      &.blue {
+        color: color(blue, 'default');
+        border-color: color(blue, 'default');
+
+        &:hover,
+        &:active,
+        &:focus {
+          border-color: white;
+          color: white;
+          background: color(blue, 'default');
+        }
+      }
+    }
+    &.bold {
+      font-weight: 600;
+    }
+  }
+
+  input::-moz-focus-inner,
+  button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+    outline: 0 none;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input[type='checkbox'] {
+    display: none;
+    position: relative;
+    left: -0.6rem;
+    vertical-align: middle;
+    appearance: none;
+    width: 2.3rem;
+    height: 2.3rem;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border: 0.1rem solid color(grey, 'lighter-2');
+    border-radius: 0.5rem;
+    background: white;
+    outline: 0 none;
+
+    // &::after {
+    //   content: '';
+    //   position: absolute;
+    //   top: .6rem;
+    //   left: .5rem;
+    //   transform: rotate(-45deg);
+    //   display: block;
+    //   width: 1.2rem;
+    //   height: .5rem;
+    //   transition: transform .3s cubic-bezier(1,.01,.49,1.01);
+    //   border-bottom: 2px solid #fff;
+    //   border-left: 2px solid #fff;
+    // }
+
+    &:checked,
+    &.checked {
+      &::after {
+        content: '✔︎' !important; // emoji is temporary
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        font-size: 1.2rem !important;
+        font-family: sans-serif !important;
+        line-height: 0.8 !important;
+        color: #fff !important;
+        transition: all 0.2s !important;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+  input[type='radio'] {
+    position: relative;
+    left: -0.6rem;
+    vertical-align: middle;
+    appearance: none;
+    width: 4rem;
+    height: 4rem;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border: 0.2rem solid color(grey, 'lighter-2');
+    border-radius: 100%;
+    background: white;
+    outline: 0 none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: rotate(-45deg);
+      display: none;
+      width: 2.1rem;
+      height: 2.1rem;
+      margin-top: -1rem;
+      margin-left: -1rem;
+      border-radius: 100%;
+      background: color(blue, 'default');
+    }
+
+    &:focus {
+      border-color: color(blue, 'default');
+    }
+
+    &:checked,
+    &.checked {
+      &::after {
+        display: block;
+      }
+    }
+  }
+  .check-alt {
+    input[type='checkbox'] {
+      &:checked {
+        background: color(blue, 'default');
+        &::after {
+          border-color: white;
+        }
+      }
+    }
+    input[type='radio'] {
+      &:checked {
+        background: color(blue, 'default');
+        &::after {
+          border-color: white;
+        }
+      }
+    }
+  }
+  .select-wrap {
+    position: relative;
+    width: 100%;
+
+    select {
+      position: relative;
+      width: 100%;
+      padding-right: 3rem;
+      line-height: 1.2;
+      appearance: none;
+      color: color(gray, 'darker-2');
+      // text-shadow: 0 0 0 #000;
+
+      &::-ms-expand {
+        display: none;
+      }
+    }
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: z(after);
+      right: 1.3rem;
+      display: block;
+      width: 0;
+      height: 0;
+      border-left: 0.8rem solid transparent;
+      border-right: 0.8rem solid transparent;
+      pointer-events: none;
+    }
+  }
+  .select-wrap,
+  .ddd-wrap {
+    &.is-valid {
+      select {
+        border-color: $validColor;
+        color: $validColor;
+
+        &:focus {
+          border: 0.1rem solid $validColor;
+          box-shadow: 0 0 0 0.2rem transparentize($validColor, 0.65);
+        }
+      }
+      & ~ .icon-aid {
+        color: $validColor;
+      }
+      & ~ .form-feedback {
+        color: $validColor;
+      }
+    }
+    &.Invalid {
+      &::after,
+      &::before,
+      ::after,
+      ::before {
+        border-top-color: $invalidColor;
+        border-bottom-color: $invalidColor;
+      }
+      select {
+        border-color: $invalidColor;
+        color: $invalidColor;
+
+        &:focus {
+          border: 0.1rem solid $invalidColor;
+          box-shadow: 0 0 0 0.2rem transparentize($invalidColor, 0.65);
+        }
+      }
+      & ~ .icon-aid {
+        color: $invalidColor;
+      }
+      & ~ .form-feedback {
+        color: $invalidColor;
+      }
+    }
+  }
+
+  .accent-color {
+    color: color(
+      blue,
+      'default'
+    ); // TODO this color has to var from brand theme to brand theme
+  }
+
+  .radio-group {
+    position: relative;
+
+    .children-text {
+      display: inline-block;
+      padding-left: 3rem;
+      text-indent: -2.3rem;
+      cursor: pointer;
+
+      &::before {
+        content: '';
+        position: relative;
+        right: 1.4rem;
+        display: inline-block;
+        width: 2.3rem;
+        height: 2.3rem;
+        vertical-align: top;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        box-shadow: none;
+        border: 0.1rem solid #ddd;
+        border-radius: 0.5rem;
+        background: white;
+        outline: 0 none;
+      }
+
+      &::after {
+        content: '✔︎';
+        position: absolute;
+        // top: 1.2rem;
+        // left: 3rem;
+        top: 0.7rem;
+        left: 3rem;
+        font-size: 1.2rem;
+        font-family: 'obe-icon-font';
+        line-height: 0.8;
+        color: #fff;
+        transition: all 0.2s;
+        // transform: translate(-50%, -50%);
+      }
+    }
+
+    input[type='checkbox'] + .children-text::after {
+      content: none;
+    }
+
+    input[type='checkbox']:checked + .children-text::after {
+      content: '✔︎';
+    }
+
+    input[type='checkbox']:checked + .children-text::before {
+      background: color(blue, default);
+    }
+  }
+
+  .input {
+    width: 100%;
+    height: 4.85rem;
+    padding: 0 1.45rem;
+    font-size: 1.3rem;
+    border: 0.1rem solid color(grey, 'lighter-2');
+    border-radius: 0.5rem;
+    background: white;
+    font: 1.6rem 'opensans-semi-bold';
+    color: color(gray, 'darker-2');
+
+    &.is-valid {
+      border: 1px solid $validColor;
+      color: $validColor;
+      & ~ .icon-aid {
+        color: $validColor;
+      }
+      & ~ .form-feedback {
+        color: $validColor;
+      }
+      &:focus {
+        border: 0.1rem solid $validColor;
+        box-shadow: 0 0 0 0.2rem transparentize($validColor, 0.65);
+      }
+    }
+
+    &.Invalid {
+      border: 1px solid $invalidColor;
+      color: $invalidColor;
+      & ~ .icon-aid {
+        color: $invalidColor;
+      }
+      & ~ .form-feedback {
+        color: $invalidColor;
+      }
+      &:focus {
+        border: 0.1rem solid $invalidColor;
+        box-shadow: 0 0 0 0.2rem transparentize($invalidColor, 0.65);
+      }
+    }
+
+    &.autocomplete {
+      padding-right: 3rem;
+      text-overflow: ellipsis;
+    }
+
+    &.textarea {
+      height: 10rem;
+      padding-top: 1rem;
+    }
+
+    &:focus {
+      outline: none;
+      border: 0.1rem solid color(blue, 'default');
+      box-shadow: 0 0 0 0.2rem transparentize(color(blue, 'default'), 0.65);
+    }
+    &::placeholder {
+      color: color(gray, 'lighter-1');
+    }
+  }
+  .control-label {
+    display: block;
+    width: 100%;
+    margin-top: 0.8rem;
+    margin-bottom: 0.6rem;
+    padding-left: 3rem;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    text-indent: -2.3rem;
+    text-align: left;
+
+    &.Invalid {
+      color: $validColor;
+    }
+    &.Invalid {
+      color: $invalidColor;
+    }
+  }
+  .form-feedback {
+    width: 100%;
+  }
+  .input-list-wrap {
+    &.is-valid {
+      color: $validColor;
+      & ~ .icon-aid {
+        color: $validColor;
+      }
+      & ~ .form-feedback {
+        color: $validColor;
+      }
+      input[type='radio'] {
+        border-color: $validColor;
+        &:focus {
+          box-shadow: 0 0 0 0.2rem transparentize($validColor, 0.65);
+        }
+        &:checked::after {
+          background: $validColor;
+        }
+      }
+      input[type='checkbox'] {
+        border-color: $validColor;
+        &:focus {
+          box-shadow: 0 0 0 0.2rem transparentize($validColor, 0.65);
+        }
+        &:checked::after {
+          border-color: $validColor;
+        }
+      }
+    }
+
+    &.Invalid {
+      color: $invalidColor;
+      & ~ .icon-aid {
+        color: $invalidColor;
+      }
+      & ~ .form-feedback {
+        color: $invalidColor;
+      }
+      input[type='radio'] {
+        border-color: $invalidColor;
+        &:focus {
+          box-shadow: 0 0 0 0.2rem transparentize($invalidColor, 0.65);
+        }
+        &:checked::after {
+          background: $invalidColor;
+        }
+      }
+      i {
+        color: red;
+      }
+      input[type='checkbox'] {
+        border-color: $invalidColor;
+        &:focus {
+          box-shadow: 0 0 0 0.2rem transparentize($invalidColor, 0.65);
+        }
+        &:checked::after {
+          border-color: $invalidColor;
+        }
+      }
+    }
+  }
+  .full-width {
+    width: 100%;
+  }
+  .form-group {
+    width: 100%;
+
+    textarea {
+      min-height: 4.85rem;
+      height: 10rem;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+  }
+  .input-container {
+    position: relative;
+    .Icon {
+      position: absolute;
+      right: 2rem;
+      top: 1.25rem;
+      color: color(blue, 'default');
+    }
+    .Invalid {
+      color: $invalidColor;
+    }
+  }
+  .select-container {
+    position: relative;
+    .Icon {
+      position: absolute;
+      right: 2rem;
+      top: 1.25rem;
+      color: color(blue, 'default');
+    }
+    .Invalid {
+      color: $invalidColor;
+    }
+  }
+  .input-wrap {
+    position: relative;
+  }
+  .date-input {
+    opacity: 0;
+    position: absolute;
+  }
+  .fields-error {
+    padding: 1rem 1.5rem;
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    max-width: 50rem;
+    font-family: $font-os-semi-bold;
+    color: color(white, 'default');
+    background: #d9534f;
+    border-radius: 0.5rem;
+  }
+  .icon-aid {
+    position: absolute;
+    top: 50%;
+    right: 0.8rem;
+    z-index: z(before);
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: color(blue, 'default');
+    pointer-events: none;
+  }
+  .autocomplete-list {
+    position: absolute;
+    top: 4.85rem;
+    z-index: z('way-top');
+    width: 100%;
+    max-height: 18rem;
+    border: 0.1rem solid color(grey, 'lighter-2');
+    border-radius: 0.5rem;
+    background: white;
+    box-shadow: 0.1rem 0.1rem 0.8rem -0.3rem rgba(0, 0, 0, 0.5);
+    font-size: 1.3rem;
+    overflow-y: scroll;
+
+    li {
+      width: 100%;
+      padding: 0.35rem 2.45rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      transition: all 0.25s ease-in-out;
+
+      strong {
+        font-weight: 600;
+      }
+
+      &:hover,
+      &:active,
+      &:focus,
+      &.active {
+        background: color(grey, 'lighter-3');
+      }
+    }
+
+    &.visible {
+      display: block;
+    }
+  }
+}
